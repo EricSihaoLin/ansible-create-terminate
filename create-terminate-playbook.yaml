@@ -21,7 +21,7 @@
       image: ami-04328208f4f0cf1fe
       wait: yes
       wait_timeout: 500
-      count: 1
+      count: 5
       region: "{{ aws_region }}"
       instance_tags:
         app: "test-deployment"
