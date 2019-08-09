@@ -8,8 +8,8 @@
     image: ami-04328208f4f0cf1fe
     wait: yes
     wait_timeout: 500
-    count: 5
+    count: 1
     instance_tags:
       app: test-deployment
-      version: {{ build_number }}
+      version: "{{ build_number }}"
   register: ec2
