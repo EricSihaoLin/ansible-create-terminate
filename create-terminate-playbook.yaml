@@ -1,3 +1,6 @@
+- set-fact: 
+    build_number: {{ lookup('env','BUILD_NUMBER') }}
+
 - name: ansible create EC2
   ec2:
     key_name: nyuelin
@@ -8,5 +11,5 @@
     count: 5
     instance_tags:
       app: test-deployment
-      version: {{ lookup('env', 'BUILD_NUMBER') }}
-    monitoring: yes
+      version: {{ build_number }}
+  register: ec2
