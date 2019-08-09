@@ -32,13 +32,17 @@
   - name: ansible filter EC2 by label
     ec2_instance_facts:
       region: "{{ aws_region }}"
+      filters:
+        instance_state-name: running
+        "tag:Name": "Test Deployment"
+        "tag:app": "test-deployment"
     register: ec2_facts
 
   - name: Filter EC2 instances
     set_fact:
       ec2_instances: |
         {% set instances = [] %}
-        {% for item in ec2_facts.instances if item.tags == ec2_tags and item.state == 'running' -%}
+        {% for item in ec2_facts.instances if item.tags.build_number != build_number -%}
           {{ instances.append(item.id) }}
         {%- endfor %}
         {{ instances }}
