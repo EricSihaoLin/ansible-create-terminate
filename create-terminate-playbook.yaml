@@ -33,7 +33,7 @@
     ec2_instance_facts:
       region: "{{ aws_region }}"
       filters:
-        instance_state-name: running
+        instance-state-name: running
         "tag:Name": "Test Deployment"
         "tag:app": "test-deployment"
     register: ec2_facts
