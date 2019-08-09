@@ -42,7 +42,8 @@
     set_fact:
       ec2_instances: |
         {% set instances = [] %}
-        {% for item in ec2_facts.instances if item.tags.build_number != build_number -%}
+        {% for item in ec2_facts.instances -%}
+          {{ item.tags }}
           {{ instances.append(item.id) }}
         {%- endfor %}
         {{ instances }}
