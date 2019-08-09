@@ -13,31 +13,32 @@
     ec2_current_tag:
       build_number: "{{ build_number }}"
 
-- name: ansible create EC2
-  ec2:
-    key_name: nyuelin
-    instance_type: t2.micro
-    image: ami-04328208f4f0cf1fe
-    wait: yes
-    wait_timeout: 500
-    count: 1
-    region: "{{ aws_region }}"
-    instance_tags:
-      app: "test-deployment"
-      Name: "Test Deployment"
-      version: "{{ build_number }}"
-  register: ec2
+  tasks:
+  - name: ansible create EC2
+    ec2:
+      key_name: nyuelin
+      instance_type: t2.micro
+      image: ami-04328208f4f0cf1fe
+      wait: yes
+      wait_timeout: 500
+      count: 1
+      region: "{{ aws_region }}"
+      instance_tags:
+        app: "test-deployment"
+        Name: "Test Deployment"
+        version: "{{ build_number }}"
+    register: ec2
 
-- name: ansible filter EC2 by label
-  ec2_instance_facts:
-    region: "{{ aws_region }}"
-  register: ec2_facts
+  - name: ansible filter EC2 by label
+    ec2_instance_facts:
+      region: "{{ aws_region }}"
+    register: ec2_facts
 
-- name: Filter EC2 instances
-  set_fact:
-    ec2_instances: |
-      {% set instances = [] %}
-      {% for item in ec2_facts.instances if item.tags == ec2_tags and item.tags != ec2_current_tag and item.state == 'running' -%}
-        {{ instances.append(item.id) }}
-      {%- endfor %}
-      {{ instances }}
+  - name: Filter EC2 instances
+    set_fact:
+      ec2_instances: |
+        {% set instances = [] %}
+        {% for item in ec2_facts.instances if item.tags == ec2_tags and item.tags != ec2_current_tag and item.state == 'running' -%}
+          {{ instances.append(item.id) }}
+        {%- endfor %}
+        {{ instances }}
