@@ -43,7 +43,7 @@
       ec2_instances: |
         {% set instances = [] %}
         {% for item in ec2_facts.instances if item.tags.version != build_number -%}
-          {{ instances.append(item.id) }}
+          {{ item }}
         {%- endfor %}
         {{ instances }}
 
