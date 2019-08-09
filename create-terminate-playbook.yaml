@@ -1,0 +1,12 @@
+- name: ansible create EC2
+  ec2:
+    key_name: nyuelin
+    instance_type: t2.micro
+    image: ami-04328208f4f0cf1fe
+    wait: yes
+    wait_timeout: 500
+    count: 5
+    instance_tags:
+      app: test-deployment
+      version: {{ lookup('env', 'BUILD_NUMBER') }}
+    monitoring: yes
